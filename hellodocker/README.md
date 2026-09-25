@@ -226,24 +226,24 @@ Pega aquí el contenido final de tu `docker-compose.yml`:
 
 | Elemento | Explicación |
 |---|---|
-| `services` | |
-| `image` | |
-| `restart` | |
-| `ports` | |
-| `environment` | |
-| `volumes` (dentro del servicio) | |
-| `volumes` (al final del fichero) | |
+| `services` | Define los contenedores individuales que componen la aplicación.|
+| `image` |Especifica la imagen de Docker que se usará para crear el contenedor. |
+| `restart` | Configura la política de reinicio automático del contenedor si falla o se apaga.|
+| `ports` |Mapea los puertos del contenedor hacia los puertos de la máquina local (host). |
+| `environment` | Define las variables de entorno que se inyectarán dentro del contenedor.|
+| `volumes` (dentro del servicio) |Monta o asigna un volumen específico (o una ruta local) a un contenedor concreto, indicando el origen externo y el destino dentro del contenedor. |
+| `volumes` (al final del fichero) | Declara y crea volúmenes nombrados a nivel global para que puedan ser compartidos y reutilizados por uno o más servicios del archivo.|
 
-1. **¿Por qué basta con escribir `db`?**
-2. **¿Sigue instalado WordPress tras `down` y `up`?**
+1. **¿Por qué basta con escribir `db`?**Porque Docker Compose crea una red interna automática donde el nombre de cada servicio (en este caso, db) funciona directamente como su nombre de dominio (hostname). Esto permite que el contenedor de WordPress se conecte a la base de datos usando solo esa palabra, sin necesidad de conocer su dirección IP.
+2. **¿Sigue instalado WordPress tras `down` y `up`?**Sí, sigue instalado siempre que se utilicen volúmenes (volumes) para guardar los datos. El comando docker-compose down borra los contenedores, pero mantiene intactos los volúmenes de datos. Al levantar todo de nuevo con docker-compose up, WordPress lee los datos guardados y mantiene tu configuración e instalación intactas.Sí, sigue instalado siempre que se utilicen volúmenes (volumes) para guardar los datos. El comando docker-compose down borra los contenedores, pero mantiene intactos los volúmenes de datos. Al levantar todo de nuevo con docker-compose up, WordPress lee los datos guardados y mantiene tu configuración e instalación intactas.
 
 ### Parte 3 · Fase 1
 
-1. **`depends_on`:**
-2. **¿Por qué `db` y no `localhost`?**
+1. **`depends_on`:**Establece el orden de arranque y parada de los servicios. Define las dependencias entre contenedores, asegurando que un servicio (como WordPress) no se inicie hasta que el servicio del que depende (como db) se esté ejecutando.
+2. **¿Por qué `db` y no `localhost`?**Porque cada contenedor tiene su propio localhost aislado. Si desde el contenedor de WordPress intentas conectar a localhost, buscará la base de datos dentro de sí mismo y fallará. Usar db le indica a Docker que resuelva el nombre a través de su red interna para llegar al contenedor correcto.
 
 ### Parte 3 · Fase 2
 
-1. **`PMA_HOST`, `PMA_USER`, `PMA_PASSWORD`:**
-2. **Contenedores recreados:**
-3. **Riesgo del login automático:**
+1. **`PMA_HOST`, `PMA_USER`, `PMA_PASSWORD`:**Son variables de entorno de phpMyAdmin. PMA_HOST indica la dirección del servidor de base de datos (por ejemplo, db), mientras que PMA_USER y PMA_PASSWORD definen las credenciales para conectarse automáticamente a él.
+2. **Contenedores recreados:**Ocurre cuando cambias la configuración en el archivo docker-compose.yml y ejecutas docker-compose up. Docker detecta las modificaciones y destruye el contenedor antiguo para crear uno nuevo con los nuevos parámetros, aplicando los cambios sin perder los volúmenes de datos asociados.
+3. **Riesgo del login automático:** Radica en la falta de seguridad, ya que cualquier persona que acceda a la URL de phpMyAdmin entrará directamente a la base de datos con permisos totales sin necesidad de autenticarse. Además, las credenciales quedan expuestas en texto plano dentro del archivo de configuración.
