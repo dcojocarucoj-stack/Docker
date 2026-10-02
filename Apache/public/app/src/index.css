@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap');
+@import 'tailwindcss';
+
+body {
+  background: #080810;
+  font-family: 'Orbitron', sans-serif;
+  color: #e0e0ff;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #080810; }
+::-webkit-scrollbar-thumb { background: #00ff8855; border-radius: 2px; }

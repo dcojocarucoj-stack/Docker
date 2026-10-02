@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  node_app:
+    build: .
+    container_name: mi_nodo_contenedor
+    ports:
+      - "8443:8443"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+    restart: always

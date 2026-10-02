@@ -1,0 +1,10 @@
+{
+  "description": "Explore a collection of simple and easy-to-understand games, including classic favorites like Snake, perfect for casual gamers seeking fun and entertainment.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

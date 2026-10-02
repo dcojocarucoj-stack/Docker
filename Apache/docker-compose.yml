@@ -1,0 +1,16 @@
+services:
+  apache:
+    image: httpd:2.4-alpine
+    container_name: apache
+    ports:
+      - 8082:80
+    volumes:
+      - ./public/app/dist:/usr/local/apache2/htdocs:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/ || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+volumes:
+    portainer_data:
