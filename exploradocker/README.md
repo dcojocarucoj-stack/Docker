@@ -32,31 +32,31 @@ docker-compose up -d
 ## 1. Contenedores
 
 1.1 ¿ Dónde podemos ver los contendores en marcha en la aplicación Docker Desktop? (Captura)
-
+![alt text](image-1.png)
 1.2 Para ver los contendores en marcha desde la terminal se usa el comando `docker ps`, ejecutalo. (Captura)
-
+![alt text](image-2.png)
 1.4 ¿Qué muestra el comando `docker container`?
-
+muestra la ayuda y la lista de todos los subcomandos disponibles para gestionar el ciclo de vida de los contenedores en Docker
 1.5 ¿Qué muestra el comando `docker container ls`?
-
+una lista con todos los contenedores que se están ejecutando en ese momento en tu sistema
 ## 2. Imagenes
 
 2.1 ¿Dónde podemos ver las imágenes que tenemos descargadas en la aplicación Docker Desktop? (Captura)
-
+![alt text](image-3.png)
 2.2 ¿Qué muestra el comando `docker images`?
-
+ una lista de todas las imágenes de Docker que están descargadas y guardadas localmente en tu ordenador
 2.3 ¿Qué muestra el comando `docker image ls`
-
+la misma lista de imágenes de Docker guardadas localmente en tu máquina que el comando
 ## 3. Volumenes
 
 3.1 ¿Dónde podemos ver los volumenes que tenemos en la aplicación Docker Desktop? (Captura)
-
+![alt text](image-4.png)
 3.2 ¿Qué vemos en Docker Desktop si entramos en uno de los volumenes disponibles? (Captura)
-
+![alt text](image-5.png)
 3.3 ¿Qué muestra el comando `docker volume`?
-
+muestra la ayuda y la lista de todos los subcomandos disponibles para gestionar el almacenamiento persistente
 3.4 ¿Qué muestra el comando `docker volume ls`?
-
+una lista con todos los volúmenes de almacenamiento creados localmente en tu sistema Docke
 ## 4. Administrando contendores
 
 4.1 Si entramos en un contendor, verémos las siguientes pestañas. Las más importantes son **Logs**, **Exec** y **Files**. Explica para qué crees que sirve cada una.
@@ -71,7 +71,7 @@ Para abrir una terminal, podemos ejecutar el programa bash con el parámetro -it
 ```bash
 docker exec -it <NOMBRE CONTENDOR> bash
 ```
-
+![alt text](image-6.png)
 Ejecuta el comando y muestra una captura de la terminal dentro del contendor.
 
 
