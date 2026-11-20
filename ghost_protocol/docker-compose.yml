@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  uploader:
+    image: filebrowser/filebrowser:latest
+    container_name: uploader
+    volumes:
+      - ${RUTA_BASE}:/srv
+    ports:
+      - "${PORT_FILEBROWSER}:80"   # <--- ¡ERROR AQUÍ!
+    restart: unless-stopped
+
+  firefox:    
+    image: jlesage/firefox   # <--- ¡ERROR AQUÍ! Falta algo al final...
+    ports:
+      - "${PORT_FIREFOX}:5800"
+    volumes:
+      - ${RUTA_BASE}:/config/downloads
+      
+  obsidian:
+    image: lscr.io/linuxserver/obsidian:latest
+    container_name: obsidian   # <--- ¡ERROR DE ESCRITURA! Demasiados espacios a la izquierda
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Etc/UTC
+    volumes:
+      - ${RUTA_BASE}:/config/redaccion_data
+    ports:
+      - "${PORT_OBSIDIAN}:3000"
+      - "3001:3001"
+    shm_size: "1gb"
+    restart: unless-stopped
+
+  libreoffice:
+    image: lscr.io/linuxserver/libreoffice:latest
+    container_name: libreoffice
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Etc/UTC
+    volumes:
+      - ${RUTA_BASE}:/config/redaccion_data
+    ports:
+      - "${PORT_LIBREOFFICE}:3000" # <--- ¡ERROR LÓGICO! Este puerto ya está ocupado arriba
+      - "3009:3001"
+    shm_size: "1gb"
+    restart: unless-stopped
+
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    ports:
+      - "${PORT_JELLYFIN}:8096"
+    environment:
+      - TZ=Etc/UTC
+    volumes:
+      - ./jellyfin_config:/config
+      - ${RUTA_BASE}:/media
+    restart: unless-stopped
+

@@ -1,0 +1,35 @@
+# Examen Docker · Bloque B
+services:
+  corrector:
+    image: python:3.12-alpine
+    profiles: ["corrector"]
+    command: python /examen/corrector/corregir.py
+    volumes:
+      - ./:/examen:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  proxy:
+    image: nginx:alpine
+    ports:
+      - "${PUERTO_PROXY}:80"
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - web
+      - quien
+      - archivos
+
+  web:
+    image: httpd:2.4
+    volumes:
+      - ./compartida:/usr/local/apache2/htdocs:ro
+
+  quien:
+    image: traefik/whoami
+    environment:
+      WHOAMI_NAME: alumno5
+
+  archivos:
+    image: filebrowser/filebrowser:v2.23.0
+    volumes:
+      - ./compartida:/srv
