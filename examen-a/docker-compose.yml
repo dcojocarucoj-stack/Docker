@@ -1,0 +1,56 @@
+# Examen Docker · Bloque A
+# Este fichero NO funciona tal como está. Arréglalo siguiendo el README.
+
+services:
+
+  # ── No toques este servicio: es el corrector del examen ─────────────────────
+  corrector:
+    image: python:3.12-alpine
+    profiles: ["corrector"]
+    command: python /examen/corrector/corregir.py
+    volumes:
+      - ./:/examen:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  wordpress:
+    image: wordpress
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "${WP_PORT}:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+    volumes:
+      - wordpress:/var/www/html
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "${PMA_PORT}:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PASSWORD}
+
+volumes:
+  wordpress:
+  db:
